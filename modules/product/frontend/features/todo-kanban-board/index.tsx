@@ -10,6 +10,7 @@ import {
   TodoItemStatus,
   useCreateTodoItemMutation,
   useListTodoItemsLazyQuery,
+  useUpdateTodoItemStatusMutation,
 } from "@monorepo-graphql/frontend-types";
 
 const asKanbanItemStatus = (status: TodoItemStatus) => {
@@ -38,6 +39,7 @@ const asTodoItemStatus = (status: KanbanItemStatus) => {
 const TodoKanbanBoard = () => {
   const [listTodoItems] = useListTodoItemsLazyQuery();
   const [createTodoItem] = useCreateTodoItemMutation();
+  const [updateTodoItemStatus] = useUpdateTodoItemStatusMutation();
 
   const loadItems = useCallback(async () => {
     return listTodoItems().then((result) => {
@@ -50,12 +52,20 @@ const TodoKanbanBoard = () => {
   }, []);
 
   const onUpdateItemStatus = useCallback(
-    async (props: {
+    async (input: {
       item: KanbanItemProps;
       from: KanbanItemStatus;
       to: KanbanItemStatus;
     }) => {
-      console.info("** update: ", props);
+      updateTodoItemStatus({
+        variables: {
+          input: {
+            itemId: input.item.id,
+            fromStatus: asTodoItemStatus(input.from),
+            toStatus: asTodoItemStatus(input.to),
+          },
+        },
+      });
     },
     [],
   );

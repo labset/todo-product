@@ -10,7 +10,6 @@ interface WithCors {
 }
 
 const withCors = ({ app, product }: WithCors) => {
-    console.info('** configure cors');
     app.options(
         `/gateway/*`,
         cors<cors.CorsRequest>({ origin: [product.baseUrl], credentials: true })
