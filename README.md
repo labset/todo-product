@@ -18,6 +18,13 @@ brew install yarn
 
 ### development
 
+- install dependencies
+
+```bash
+nvm install
+yarn
+```
+
 - graphql codegen
 
 ```bash
@@ -40,6 +47,12 @@ yarn workspace @monorepo/harness start
 
 ```bash
 yarn workspace @monorepo-frontend/app start
+```
+
+- stop environment
+
+```bash
+yarn workspace @monorepo/harness env:down
 ```
 
 ### house-keeping
