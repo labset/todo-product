@@ -6,8 +6,8 @@ enum TodoItemStatus {
 
 type TodoItem {
     id: ID!,
-    description: String,
-    status: TodoItemStatus
+    description: String!,
+    status: TodoItemStatus!
 }
 
 type Query {

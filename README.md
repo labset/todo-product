@@ -18,16 +18,22 @@ brew install yarn
 
 ### development
 
+- graphql codegen
+
+```bash
+yarn workspace @monorepo-graphql/schema codegen
+```
+
 - start environment
 
 ```bash
 yarn workspace @monorepo/harness env:up
 ```
 
-- graphql codegen
+- start development server
 
 ```bash
-yarn workspace @monorepo-graphql/schema codegen
+yarn workspace @monorepo/harness start
 ```
 
 - start frontend

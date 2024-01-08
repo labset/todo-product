@@ -16,14 +16,18 @@ interface KanbanBoardProps {
   }) => Promise<void>;
 }
 
+const emptyBoard = (): Record<KanbanItemStatus, KanbanItemProps[]> => {
+  return {
+    [KanbanItemStatus.TODO]: [],
+    [KanbanItemStatus.IN_PROGRESS]: [],
+    [KanbanItemStatus.DONE]:[]
+  }
+}
+
 const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
   const [items, setItems] = useState<
     Record<KanbanItemStatus, KanbanItemProps[]>
-  >({
-    [KanbanItemStatus.TODO]: [],
-    [KanbanItemStatus.IN_PROGRESS]: [],
-    [KanbanItemStatus.DONE]: [],
-  });
+  >(emptyBoard());
 
   useEffect(() => {
     loadItems().then((items) => {
@@ -79,5 +83,5 @@ const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
   );
 };
 
-export { KanbanBoard, KanbanItemStatus };
+export { KanbanBoard, KanbanItemStatus, emptyBoard };
 export type { KanbanBoardProps, KanbanItemProps };
