@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   aws-localstack:
-    image: localstack/localstack:2.0.0
+    image: localstack/localstack:3.0.2
     environment:
       - SERVICES=dynamodb,lambda,apigateway,ssm
     ports:
