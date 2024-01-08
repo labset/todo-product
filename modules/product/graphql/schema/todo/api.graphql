@@ -6,15 +6,15 @@ query ListTodoItems {
     }
 }
 
-mutation CreateTodoItem {
-    createTodoItem {
+mutation CreateTodoItem($input: CreateTodoItemInput!) {
+    createTodoItem(input: $input) {
         id
         status
         description
     }
 }
 
-mutation UpdateTodoItemStatus($input: UpdateTodoItemStatusInput) {
+mutation UpdateTodoItemStatus($input: UpdateTodoItemStatusInput!) {
     updateTodoItemStatus(input: $input) {
         id
         description

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
 import type { DropResult } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 
 import { Grid } from "@mui/material";
 
@@ -9,7 +9,8 @@ import { KanbanList } from "./kanban-list";
 
 interface KanbanBoardProps {
   loadItems: () => Promise<Record<KanbanItemStatus, KanbanItemProps[]>>;
-  updateItemStatus: (input: {
+  onAddItem: (status: KanbanItemStatus) => Promise<KanbanItemProps>;
+  onUpdateItemStatus: (input: {
     item: KanbanItemProps;
     from: KanbanItemStatus;
     to: KanbanItemStatus;
@@ -24,7 +25,11 @@ const emptyBoard = (): Record<KanbanItemStatus, KanbanItemProps[]> => {
   };
 };
 
-const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
+const KanbanBoard = ({
+  loadItems,
+  onUpdateItemStatus,
+  onAddItem,
+}: KanbanBoardProps) => {
   const [items, setItems] =
     useState<Record<KanbanItemStatus, KanbanItemProps[]>>(emptyBoard());
 
@@ -49,10 +54,16 @@ const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
     const destination = items[destinationStatus];
     const [removedFromSource] = source.splice(result.source.index, 1);
     destination.splice(result.destination.index, 0, removedFromSource);
-    await updateItemStatus({
+    await onUpdateItemStatus({
       item: removedFromSource,
       from: sourceStatus,
       to: destinationStatus,
+    });
+  };
+
+  const onAddItemToList = async (status: KanbanItemStatus) => {
+    onAddItem(status).then((item) => {
+      items[status].push(item);
     });
   };
 
@@ -63,18 +74,21 @@ const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
           <KanbanList
             status={KanbanItemStatus.TODO}
             items={items[KanbanItemStatus.TODO]}
+            onAddItem={() => onAddItemToList(KanbanItemStatus.TODO)}
           />
         </Grid>
         <Grid item xs={3}>
           <KanbanList
             status={KanbanItemStatus.IN_PROGRESS}
             items={items[KanbanItemStatus.IN_PROGRESS]}
+            onAddItem={() => onAddItemToList(KanbanItemStatus.IN_PROGRESS)}
           />
         </Grid>
         <Grid item xs={3}>
           <KanbanList
             status={KanbanItemStatus.DONE}
             items={items[KanbanItemStatus.DONE]}
+            onAddItem={() => onAddItemToList(KanbanItemStatus.DONE)}
           />
         </Grid>
       </Grid>

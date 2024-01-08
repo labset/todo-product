@@ -15,12 +15,16 @@ type Query {
 }
 
 type Mutation {
-    createTodoItem: TodoItem!
-    updateTodoItemStatus(input: UpdateTodoItemStatusInput): TodoItem!
+    createTodoItem(input: CreateTodoItemInput!): TodoItem!
+    updateTodoItemStatus(input: UpdateTodoItemStatusInput!): TodoItem!
+}
+
+input CreateTodoItemInput {
+    status: TodoItemStatus!
 }
 
 input UpdateTodoItemStatusInput {
     itemId: ID!
-    fromStatus: TodoItemStatus
-    toStatus: TodoItemStatus
+    fromStatus: TodoItemStatus!
+    toStatus: TodoItemStatus!
 }

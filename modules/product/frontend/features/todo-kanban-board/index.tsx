@@ -8,6 +8,7 @@ import {
 } from "@monorepo-frontend/kanban-board-component";
 import {
   TodoItemStatus,
+  useCreateTodoItemMutation,
   useListTodoItemsLazyQuery,
 } from "@monorepo-graphql/frontend-types";
 
@@ -23,8 +24,20 @@ const asKanbanItemStatus = (status: TodoItemStatus) => {
   }
 };
 
+const asTodoItemStatus = (status: KanbanItemStatus) => {
+  switch (status) {
+    case KanbanItemStatus.TODO:
+      return TodoItemStatus.Todo;
+    case KanbanItemStatus.IN_PROGRESS:
+      return TodoItemStatus.InProgress;
+    case KanbanItemStatus.DONE:
+      return TodoItemStatus.Done;
+  }
+};
+
 const TodoKanbanBoard = () => {
   const [listTodoItems] = useListTodoItemsLazyQuery();
+  const [createTodoItem] = useCreateTodoItemMutation();
 
   const loadItems = useCallback(async () => {
     return listTodoItems().then((result) => {
@@ -36,7 +49,7 @@ const TodoKanbanBoard = () => {
     });
   }, []);
 
-  const updateItemStatus = useCallback(
+  const onUpdateItemStatus = useCallback(
     async (props: {
       item: KanbanItemProps;
       from: KanbanItemStatus;
@@ -47,8 +60,22 @@ const TodoKanbanBoard = () => {
     [],
   );
 
+  const onAddItem = useCallback(async (status: KanbanItemStatus) => {
+    return createTodoItem({
+      variables: { input: { status: asTodoItemStatus(status) } },
+    }).then(({ data }) => {
+      const id = data?.createTodoItem.id ?? "";
+      const description = data?.createTodoItem.description ?? "";
+      return { id, description } as KanbanItemProps;
+    });
+  }, []);
+
   return (
-    <KanbanBoard loadItems={loadItems} updateItemStatus={updateItemStatus} />
+    <KanbanBoard
+      loadItems={loadItems}
+      onAddItem={onAddItem}
+      onUpdateItemStatus={onUpdateItemStatus}
+    />
   );
 };
 

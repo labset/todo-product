@@ -9,6 +9,7 @@ import { KanbanItem, KanbanItemProps, KanbanItemStatus } from "./kanban-item";
 interface KanbanListProps {
   status: KanbanItemStatus;
   items: KanbanItemProps[];
+  onAddItem: () => Promise<void>;
 }
 
 const KanbanListStatus = ({ status }: Pick<KanbanListProps, "status">) => {
@@ -47,7 +48,10 @@ const DraggableListItem = ({
   );
 };
 
-const DroppableList = ({ status, items }: KanbanListProps) => {
+const DroppableList = ({
+  status,
+  items,
+}: Pick<KanbanListProps, "status" | "items">) => {
   return (
     <Droppable droppableId={status}>
       {(provided) => (
@@ -62,12 +66,16 @@ const DroppableList = ({ status, items }: KanbanListProps) => {
   );
 };
 
-const KanbanList = ({ status, items }: KanbanListProps) => {
+const KanbanList = ({ status, items, onAddItem }: KanbanListProps) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
       <Box display="flex">
         <KanbanListStatus status={status} />
-        <IconButton size="small" sx={{ marginLeft: "auto" }}>
+        <IconButton
+          size="small"
+          sx={{ marginLeft: "auto" }}
+          onClick={onAddItem}
+        >
           <AddIcon />
         </IconButton>
       </Box>
