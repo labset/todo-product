@@ -4,6 +4,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import type { ExpressContextFunctionArgument } from '@apollo/server/express4';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from '@apollo/server-plugin-landing-page-graphql-playground';
 import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ITodoDocAccess } from '@monorepo-backend-db/api-access';
 import { typeDefs } from '@monorepo-graphql/backend-types';
 import {
     ITodoApolloContext,
@@ -15,9 +16,10 @@ import { Express } from 'express';
 
 interface GraphqlApiEndpointProps {
     app: Express;
+    access: ITodoDocAccess;
 }
 
-const graphqlApiEndpoint = async ({ app }: GraphqlApiEndpointProps) => {
+const graphqlApiEndpoint = async ({ app, access }: GraphqlApiEndpointProps) => {
     const schema = makeExecutableSchema({
         typeDefs,
         resolvers: { Query, Mutation }
@@ -33,7 +35,7 @@ const graphqlApiEndpoint = async ({ app }: GraphqlApiEndpointProps) => {
     ];
 
     const context = async (_: ExpressContextFunctionArgument) => {
-        return new TodoApolloContext();
+        return new TodoApolloContext(access);
     };
 
     const server = new ApolloServer<ITodoApolloContext>({

@@ -1,4 +1,12 @@
+import path from 'path';
+
+import { localstackDynamoDbClientConfig } from '@labset/platform-backend-db';
+import {
+    TodoDynamoDbClients,
+    todoDocAccess
+} from '@monorepo-backend-db/dynamodb-access';
 import { graphqlApiEndpoint } from '@monorepo-backend-endpoints/graphql-api';
+import dotenv from 'dotenv';
 import express, { Express, json } from 'express';
 
 interface WithExpressApp {
@@ -13,7 +21,10 @@ const createExpressApp = async (): Promise<WithExpressApp> => {
 };
 
 const configureProduct = async ({ app }: WithExpressApp) => {
-    await graphqlApiEndpoint({ app });
+    const clients = new TodoDynamoDbClients(localstackDynamoDbClientConfig);
+    await clients.upgrade();
+    const access = todoDocAccess(clients);
+    await graphqlApiEndpoint({ app, access });
     return { app };
 };
 
@@ -26,11 +37,13 @@ const startExpressApp = async ({ app }: WithExpressApp) => {
     });
     const shutdown = () => {
         console.info('\n🛑 [monorepo-harness] shutdown');
+        server.close();
     };
     process.on('SIGTERM', shutdown);
     process.on('SIGINT', shutdown);
 };
 
+dotenv.config({ path: path.resolve(__dirname, '.env.localstack') });
 createExpressApp()
     .then(configureProduct)
     .then(startExpressApp)
