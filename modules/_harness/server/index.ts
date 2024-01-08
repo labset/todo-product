@@ -1,6 +1,8 @@
 import path from 'path';
 
 import { localstackDynamoDbClientConfig } from '@labset/platform-backend-db';
+import { todoConfig } from '@monorepo-backend/config';
+import { withCors } from '@monorepo-backend/middlewares';
 import {
     TodoDynamoDbClients,
     todoDocAccess
@@ -21,6 +23,13 @@ const createExpressApp = async (): Promise<WithExpressApp> => {
 };
 
 const configureProduct = async ({ app }: WithExpressApp) => {
+    withCors({
+        app,
+        product: {
+            baseUrl: todoConfig.BASE_URL,
+            gatewayUrl: todoConfig.GATEWAY_URL
+        }
+    });
     const clients = new TodoDynamoDbClients(localstackDynamoDbClientConfig);
     await clients.upgrade();
     const access = todoDocAccess(clients);

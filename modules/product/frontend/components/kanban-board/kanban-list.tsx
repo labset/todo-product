@@ -1,7 +1,8 @@
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
-import { Box, Chip, Divider, Grid, Paper } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Box, Chip, Divider, Grid, IconButton, Paper } from "@mui/material";
 
 import { KanbanItem, KanbanItemProps, KanbanItemStatus } from "./kanban-item";
 
@@ -64,7 +65,12 @@ const DroppableList = ({ status, items }: KanbanListProps) => {
 const KanbanList = ({ status, items }: KanbanListProps) => {
   return (
     <Paper variant="outlined" sx={{ p: 2 }}>
-      <KanbanListStatus status={status} />
+      <Box display="flex">
+        <KanbanListStatus status={status} />
+        <IconButton size="small" sx={{ marginLeft: "auto" }}>
+          <AddIcon />
+        </IconButton>
+      </Box>
       <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
       <DroppableList status={status} items={items} />
     </Paper>

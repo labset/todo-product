@@ -20,14 +20,13 @@ const emptyBoard = (): Record<KanbanItemStatus, KanbanItemProps[]> => {
   return {
     [KanbanItemStatus.TODO]: [],
     [KanbanItemStatus.IN_PROGRESS]: [],
-    [KanbanItemStatus.DONE]:[]
-  }
-}
+    [KanbanItemStatus.DONE]: [],
+  };
+};
 
 const KanbanBoard = ({ loadItems, updateItemStatus }: KanbanBoardProps) => {
-  const [items, setItems] = useState<
-    Record<KanbanItemStatus, KanbanItemProps[]>
-  >(emptyBoard());
+  const [items, setItems] =
+    useState<Record<KanbanItemStatus, KanbanItemProps[]>>(emptyBoard());
 
   useEffect(() => {
     loadItems().then((items) => {
