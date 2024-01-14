@@ -1,4 +1,4 @@
-import { IDynamoDbMigration } from '@labset/platform-backend-db';
+import { IDynamoDbMigration } from '@labset/platform-core-backend';
 
 import { CreateTodoItemTable } from './20240108192840_create-todo-item-table';
 

@@ -1,4 +1,4 @@
-import { DocEntity } from '@labset/platform-backend-db';
+import { DocEntity } from "@labset/platform-core-backend";
 
 enum TodoItemStatus {
     TODO = 'TODO',

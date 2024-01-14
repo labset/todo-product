@@ -2,7 +2,7 @@ import {
     DocEntityAccess,
     DocEntityReadAccess,
     DocEntityWriteAccess
-} from '@labset/platform-backend-db';
+} from '@labset/platform-core-backend';
 import { TodoItem } from '@monorepo-backend-db/api-access';
 
 import { TodoDynamoDbClients } from './../clients';

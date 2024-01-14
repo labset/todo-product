@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { localstackDynamoDbClientConfig } from '@labset/platform-backend-db';
+import { localstackDynamoDbClientConfig } from '@labset/platform-core-backend';
 import { todoConfig } from '@monorepo-backend/config';
 import { withCors } from '@monorepo-backend/middlewares';
 import {

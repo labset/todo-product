@@ -1,4 +1,4 @@
-import { IDocEntityAccess } from '@labset/platform-backend-db';
+import { IDocEntityAccess } from '@labset/platform-core-backend';
 
 import { TodoItem } from './entities';
 

@@ -1,4 +1,4 @@
-import { CreateTableMigration } from '@labset/platform-backend-db';
+import { CreateTableMigration } from '@labset/platform-core-backend';
 
 import { tables } from './../tables';
 

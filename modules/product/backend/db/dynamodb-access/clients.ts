@@ -1,7 +1,7 @@
 import {
     DynamoDbClientConfig,
     DynamoDbClients
-} from '@labset/platform-backend-db';
+} from '@labset/platform-core-backend';
 
 import migrations from './migrations';
 
